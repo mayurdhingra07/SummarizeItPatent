@@ -8,13 +8,13 @@ import PyPDF2
 import fitz  # PyMuPDF
 
 @st.cache_data(max_entries=1, ttl=None)
-def set_api_key(api_key):
-    os.environ["OPENAI_API_KEY"] = api_key
+def set_api_key(Api_key):
+    openai.api_key = Api_key
 
-api_key = st.text_input('Enter your OpenAI API key', type="password")
+Api_key = st.text_input('Enter your OpenAI API key', type="password")
 
-if api_key:
-    set_api_key(api_key)
+if Api_key:
+    set_api_key(Api_key)
 
 st.title("AI Patent Summarizer")
 
