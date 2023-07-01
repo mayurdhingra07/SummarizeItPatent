@@ -5,6 +5,7 @@ import streamlit as st
 from langchain.document_loaders import UnstructuredFileLoader
 from langchain.text_splitter import CharacterTextSplitter
 import PyPDF2
+import fitz  # PyMuPDF
 
 os.environ["OPENAI_API_KEY"] = "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"
 
@@ -12,18 +13,19 @@ st.title("AI Patent Summarizer")
 
 uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
 
+document = ""  # define document variable outside the if block
 
 if uploaded_file is not None:
-
-# Open the PDF file
-    with fitz.open('example.pdf') as doc:
+    # Save the uploaded file
+    with open("uploaded_patent.pdf", "wb") as f:
+        f.write(uploaded_file.getvalue())
+        
+    # Open the PDF file
+    with fitz.open("uploaded_patent.pdf") as doc:
         # Iterate over the pages
         for page in doc:
-            # Extract the text
-            document = page.get_text()
-            # Print the text
-            #print(text)
-
+            # Extract the text and append to the document
+            document += page.get_text()
 
 MODEL_NAME = "gpt-3.5-turbo-16k-0613"
 system_prompt = "You are a helpful assistant."
@@ -46,9 +48,7 @@ def generate_and_print(system_prompt, user_prompt):
         temperature=0,
     )
 
-    return response.choices[0].message['content'] # return the generated content
-
+    return response.choices[0].message['content']  # return the generated content
 
 generation = generate_and_print(system_prompt, user_prompt)
 st.write(generation)
-
