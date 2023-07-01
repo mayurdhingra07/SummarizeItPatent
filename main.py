@@ -29,11 +29,12 @@ if uploaded_file is not None:
 
 MODEL_NAME = "gpt-3.5-turbo-16k-0613"
 system_prompt = "You are a helpful assistant."
-user_prompt = "Summarize this patent in 250 words max using these steps: 
-1. Explain the patent background, with a focus on the field of the invention and prior art issues addressed. 
+user_prompt = """
+Summarize this patent in 250 words max using these steps:
+1. Explain the patent background, with a focus on the field of the invention and prior art issues addressed.
 2. Explain claim 1 in simple language step by step, when you are explaining the patent claim,
-also take relevant help from the patent description to explain the patent claim better. 
-The patent is:" + document
+also take relevant help from the patent description to explain the patent claim better.
+The patent is: {}""".format(document)
 
 def generate_and_print(system_prompt, user_prompt, n=1):
     messages=[
