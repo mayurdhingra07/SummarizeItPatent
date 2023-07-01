@@ -37,16 +37,15 @@ The patent is:" + document
 
 def generate_and_print(system_prompt, user_prompt, n=1):
     messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ]
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
     response = completion_with_backoff(
         model=MODEL_NAME,
         messages=messages,
-        n = n,
-        )
-    generation = response.message.content
-    
-generate_and_print(system_prompt, user_prompt)
+    )
+    return response.choices[0].message['content'] # return the generated content
 
+generation = generate_and_print(system_prompt, user_prompt)
 st.write(generation)
+
