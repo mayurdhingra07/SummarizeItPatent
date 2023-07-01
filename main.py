@@ -13,10 +13,6 @@ import PyPDF2
 
 os.environ["OPENAI_API_KEY"] = "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"
 
-@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
-def completion_with_backoff(**kwargs):
-    return openai.ChatCompletion.create(**kwargs)
-
 st.title("AI Patent Summarizer")
 
 uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
@@ -47,7 +43,7 @@ def generate_and_print(system_prompt, user_prompt, n=1):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    response = completion_with_backoff(
+    response =  return openai.ChatCompletion.create(
         model=MODEL_NAME,
         messages=messages,
     )
