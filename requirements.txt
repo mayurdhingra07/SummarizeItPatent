@@ -5,3 +5,4 @@ unstructured
 unstructured[local-inference]
 tenacity
 PyPDF2
+pymupdf
