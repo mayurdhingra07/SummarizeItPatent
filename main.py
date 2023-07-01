@@ -7,11 +7,14 @@ from langchain.text_splitter import CharacterTextSplitter
 import PyPDF2
 import fitz  # PyMuPDF
 
+@st.experimental_memo(max_entries=1, ttl=None)
+def set_api_key(api_key):
+    os.environ["OPENAI_API_KEY"] = api_key
+
 api_key = st.text_input('Enter your OpenAI API key', type="password")
 
 if api_key:
-    os.environ["OPENAI_API_KEY"] = api_key
-    # rest of your code
+    set_api_key(api_key)
 
 st.title("AI Patent Summarizer")
 
