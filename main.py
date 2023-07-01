@@ -7,7 +7,7 @@ from langchain.text_splitter import CharacterTextSplitter
 import PyPDF2
 import fitz  # PyMuPDF
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 st.title("AI Patent Summarizer")
 
