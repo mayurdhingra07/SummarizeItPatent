@@ -9,6 +9,7 @@ from tenacity import (
     stop_after_attempt,
     wait_random_exponential, # for exponential backoff
 )  
+import PyPDF2
 
 os.environ["OPENAI_API_KEY"] = "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"
 
@@ -20,12 +21,17 @@ st.title("AI Patent Summarizer")
 
 uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
 
+
 if uploaded_file is not None:
     with open("uploaded_patent.pdf", "wb") as f:
         f.write(uploaded_file.getvalue())
 
-    loader = UnstructuredFileLoader("uploaded_patent.pdf", mode="elements")
-    document = loader.load()
+    with open("uploaded_patent.pdf", "rb") as f:
+        pdf_reader = PyPDF2.PdfFileReader(f)
+        document = ""
+        for page in range(pdf_reader.getNumPages()):
+            document += pdf_reader.getPage(page).extractText()
+
 
 MODEL_NAME = "gpt-3.5-turbo-16k-0613"
 system_prompt = "You are a helpful assistant."
