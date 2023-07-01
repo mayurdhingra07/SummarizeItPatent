@@ -7,7 +7,7 @@ from langchain.text_splitter import CharacterTextSplitter
 import PyPDF2
 import fitz  # PyMuPDF
 
-@st.experimental_memo(max_entries=1, ttl=None)
+@st.cache_data(max_entries=1, ttl=None)
 def set_api_key(api_key):
     os.environ["OPENAI_API_KEY"] = api_key
 
