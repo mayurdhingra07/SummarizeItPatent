@@ -4,11 +4,6 @@ import openai
 import streamlit as st
 from langchain.document_loaders import UnstructuredFileLoader
 from langchain.text_splitter import CharacterTextSplitter
-from tenacity import (
-    retry,
-    stop_after_attempt,
-    wait_random_exponential, # for exponential backoff
-)  
 import PyPDF2
 
 os.environ["OPENAI_API_KEY"] = "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"
@@ -38,16 +33,20 @@ Summarize this patent in 250 words max using these steps:
 also take relevant help from the patent description to explain the patent claim better.
 The patent is: {}""".format(document)
 
-def generate_and_print(system_prompt, user_prompt, n=1):
+def generate_and_print(system_prompt, user_prompt):
     messages=[
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    response =  return openai.ChatCompletion.create(
+
+    response = openai.ChatCompletion.create(
         model=MODEL_NAME,
         messages=messages,
+        temperature=0,
     )
+
     return response.choices[0].message['content'] # return the generated content
+
 
 generation = generate_and_print(system_prompt, user_prompt)
 st.write(generation)
