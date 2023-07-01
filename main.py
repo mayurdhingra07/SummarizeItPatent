@@ -57,5 +57,14 @@ def generate_and_print(system_prompt, user_prompt):
 
     return response.choices[0].message['content']  # return the generated content
 
-generation = generate_and_print(system_prompt, user_prompt)
-st.write(generation)
+# If the API key is set, generate the content
+if Api_key and uploaded_file:
+    try:
+        if 'generation' not in st.session_state:
+            st.session_state['generation'] = generate_and_print(system_prompt, user_prompt)
+    except openai.error.RateLimitError:
+        st.error("You've hit the OpenAI API rate limit. Please wait for a moment and try again.")
+
+# Display the content, if it has been generated
+if 'generation' in st.session_state:
+    st.write(st.session_state['generation'])
