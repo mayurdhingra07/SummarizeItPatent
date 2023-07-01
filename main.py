@@ -14,14 +14,15 @@ uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
 
 
 if uploaded_file is not None:
-    with open("uploaded_patent.pdf", "wb") as f:
-        f.write(uploaded_file.getvalue())
 
-    with open("uploaded_patent.pdf", "rb") as f:
-        pdf_reader = PyPDF2.PdfFileReader(f)
-        document = ""
-        for page in range(pdf_reader.getNumPages()):
-            document += pdf_reader.getPage(page).extractText()
+# Open the PDF file
+    with fitz.open('example.pdf') as doc:
+        # Iterate over the pages
+        for page in doc:
+            # Extract the text
+            document = page.get_text()
+            # Print the text
+            #print(text)
 
 
 MODEL_NAME = "gpt-3.5-turbo-16k-0613"
