@@ -17,10 +17,16 @@ st.title("AI Patent Summarizer")
 # Sidebar form
 with st.sidebar.form(key='api_key_form'):
     st.session_state['Api_key'] = st.text_input('Enter your OpenAI API key', value=st.session_state.get("Api_key", ""), type="password")
-    submitted = st.form_submit_button('Submit')
+    submit_button, clear_button = st.beta_columns(2)
+    submitted = submit_button.form_submit_button('Submit')
+    cleared = clear_button.button('Clear')
+
     if submitted:
         if 'generation' in st.session_state:
             del st.session_state['generation']
+
+    if cleared:
+        st.session_state['Api_key'] = ""
 
 if 'Api_key' in st.session_state and st.session_state['Api_key']:
     set_api_key(st.session_state['Api_key'])
