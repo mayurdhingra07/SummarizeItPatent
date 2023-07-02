@@ -8,7 +8,10 @@ import fitz  # PyMuPDF
 def set_api_key(Api_key):
     openai.api_key = Api_key
 
-# Let's first set the title in the middle of the page
+# Logo of the company
+st.image("https://raw.githubusercontent.com/mayurdhingra07/SummarizeItPatent/main/Logo_-_High_Quality-removebg-e1591864365270-300x50.png")
+
+# Set the title in the middle of the page
 st.title("AI Patent Summarizer")
 
 # API key input is on the sidebar.
