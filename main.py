@@ -14,14 +14,23 @@ st.image("https://raw.githubusercontent.com/mayurdhingra07/SummarizeItPatent/mai
 # Set the title in the middle of the page
 st.title("AI Patent Summarizer")
 
+# Sidebar form
 with st.sidebar.form(key='api_key_form'):
-    Api_key = st.text_input('Enter your OpenAI API key', type="password")
-    enter_button, clear_button = st.form_submit_button('Enter'), st.form_clear_button('Clear')
-    
+    Api_key = st.text_input('Enter your OpenAI API key', value = st.session_state.get("Api_key",""), type="password")
+    enter_button = st.form_submit_button('Enter')
+
 if enter_button:
     set_api_key(Api_key)
+    st.session_state["Api_key"] = Api_key
+
+clear_button = st.sidebar.button("Clear")
+
+if clear_button:
+    st.session_state["Api_key"] = ""
+    Api_key = ""
 
 # ... rest of your code ...
+
 
 
 if Api_key:
