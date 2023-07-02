@@ -11,15 +11,18 @@ def set_api_key(Api_key):
 # Let's first set the title in the middle of the page
 st.title("AI Patent Summarizer")
 
-# Then, just below the title, we set the file uploader
-uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
-
-# Let's now move the API key to the sidebar to keep it out of the main view.
-# It's not exactly on the extreme left, but it keeps the main page clean.
+# API key input is on the sidebar.
 Api_key = st.sidebar.text_input('Enter your OpenAI API key', type="password")
 
 if Api_key:
     set_api_key(Api_key)
+
+# If the API key is entered, display the file uploader
+if Api_key:
+    uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
+else:
+    uploaded_file = None
+    st.write("Please enter your OpenAI API key to continue.")
 
 document = ""  # define document variable outside the if block
 
@@ -58,7 +61,7 @@ def generate_and_print(system_prompt, user_prompt):
 
     return response.choices[0].message['content']  # return the generated content
 
-# If the API key is set, generate the content
+# If the API key is set and a file has been uploaded, generate the content
 if Api_key and uploaded_file:
     try:
         if 'generation' not in st.session_state:
