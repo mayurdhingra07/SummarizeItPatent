@@ -16,17 +16,14 @@ st.title("AI Patent Summarizer")
 
 # Sidebar form
 with st.sidebar.form(key='api_key_form'):
-    st.text_input('Enter your OpenAI API key', value = st.session_state.get("Api_key",""), type="password")
-    enter_button = st.form_submit_button('Enter')
-    clear_button = st.form_submit_button("Clear")
+    st.session_state['Api_key'] = st.text_input('Enter your OpenAI API key', value=st.session_state.get("Api_key", ""), type="password")
+    submitted = st.form_submit_button('Submit')
+    if submitted:
+        if 'generation' in st.session_state:
+            del st.session_state['generation']
 
-if enter_button:
-    set_api_key(st.session_state.get("Api_key",""))
-
-if clear_button:
-    st.session_state["Api_key"] = ""
-    if 'generation' in st.session_state:
-        del st.session_state['generation']
+if 'Api_key' in st.session_state and st.session_state['Api_key']:
+    set_api_key(st.session_state['Api_key'])
 
 # If the API key is entered, display the file uploader
 if st.session_state.get("Api_key"):
