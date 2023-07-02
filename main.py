@@ -9,20 +9,10 @@ def set_api_key(Api_key):
     openai.api_key = Api_key
 
 # Logo of the company
-#st.image("https://raw.githubusercontent.com/mayurdhingra07/SummarizeItPatent/main/Logo_-_High_Quality-removebg-e1591864365270-300x50.png")
-
-# Creating two columns for the logo and the title
-col1, col2 = st.columns([1,3])
-
-# Placing the logo in the first column
-col1.image("https://raw.githubusercontent.com/mayurdhingra07/SummarizeItPatent/main/Logo_-_High_Quality-removebg-e1591864365270-300x50.png")
-
-# Placing the title in the second column
-col2.title("AI Patent Summarizer")
-
+st.image("https://raw.githubusercontent.com/mayurdhingra07/SummarizeItPatent/main/Logo_-_High_Quality-removebg-e1591864365270-300x50.png")
 
 # Set the title in the middle of the page
-#st.title("AI Patent Summarizer")
+st.title("AI Patent Summarizer")
 
 # API key input is on the sidebar.
 Api_key = st.sidebar.text_input('Enter your OpenAI API key', type="password")
