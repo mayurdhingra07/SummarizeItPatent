@@ -8,15 +8,18 @@ import fitz  # PyMuPDF
 def set_api_key(Api_key):
     openai.api_key = Api_key
 
+# Let's first set the title in the middle of the page
 st.title("AI Patent Summarizer")
 
-# Place the API key input at the top, but keep it in the left part of the layout
-Api_key = st.text_input('Enter your OpenAI API key', type="password")
+# Then, just below the title, we set the file uploader
+uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
+
+# Let's now move the API key to the sidebar to keep it out of the main view.
+# It's not exactly on the extreme left, but it keeps the main page clean.
+Api_key = st.sidebar.text_input('Enter your OpenAI API key', type="password")
 
 if Api_key:
     set_api_key(Api_key)
-
-uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
 
 document = ""  # define document variable outside the if block
 
