@@ -2,28 +2,19 @@ import os
 import re
 import openai
 import streamlit as st
-from langchain.document_loaders import UnstructuredFileLoader
-from langchain.text_splitter import CharacterTextSplitter
-import PyPDF2
 import fitz  # PyMuPDF
 
 @st.cache_data(max_entries=1, ttl=None)
 def set_api_key(Api_key):
     openai.api_key = Api_key
 
-# Create a layout with 3 columns
-col1, col2, col3 = st.columns([1,6,1])
+st.title("AI Patent Summarizer")
 
-# Place the text input in the left-most column
-Api_key = col1.text_input('Enter your OpenAI API key', type="password")
+# Place the API key input at the top, but keep it in the left part of the layout
+Api_key = st.text_input('Enter your OpenAI API key', type="password")
 
 if Api_key:
     set_api_key(Api_key)
-
-# ... rest of your code ...
-
-
-st.title("AI Patent Summarizer")
 
 uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
 
