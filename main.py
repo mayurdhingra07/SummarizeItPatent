@@ -22,11 +22,7 @@ if Api_key:
 
 # If the API key is entered, display the file uploader
 if Api_key:
-    # Create a layout with 3 columns
-    col1, col2, col3 = st.columns([3,3,3])
-
-    # Place the file uploader in the first column
-    uploaded_file = col1.file_uploader("Upload a patent PDF", type=["pdf"])
+    uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
 else:
     uploaded_file = None
     st.write("Please enter your OpenAI API key to continue.")
