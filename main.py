@@ -4,7 +4,7 @@ import openai
 import streamlit as st
 import fitz  # PyMuPDF
 
-@st.cache_data(max_entries=1, ttl=None)
+@st.cache(max_entries=1, ttl=None)
 def set_api_key(Api_key):
     openai.api_key = Api_key
 
@@ -28,15 +28,9 @@ clear_button = st.sidebar.button("Clear")
 if clear_button:
     st.session_state["Api_key"] = ""
     Api_key = ""
+    if 'generation' in st.session_state:
+        del st.session_state['generation']
 
-# ... rest of your code ...
-
-
-
-if Api_key:
-    set_api_key(Api_key)
-
-# If the API key is entered, display the file uploader
 if Api_key:
     uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
 else:
