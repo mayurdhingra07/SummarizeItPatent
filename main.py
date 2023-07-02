@@ -2,7 +2,10 @@ import os
 import re
 import openai
 import streamlit as st
-import fitz  # PyMuPDF
+import requests
+from bs4 import BeautifulSoup
+import pdfkit
+from streamlit.server.server import Server
 
 @st.cache_data(max_entries=1, ttl=None)
 def set_api_key(Api_key):
@@ -26,26 +29,31 @@ with st.sidebar.form(key='api_key_form'):
 if 'Api_key' in st.session_state and st.session_state['Api_key']:
     set_api_key(st.session_state['Api_key'])
 
-# If the API key is entered, display the file uploader
+# If the API key is entered, display the patent number input
 if st.session_state.get("Api_key"):
-    uploaded_file = st.file_uploader("Upload a patent PDF", type=["pdf"])
+    patent_number = st.text_input("Enter a patent number", value=st.session_state.get("patent_number", ""))
 else:
-    uploaded_file = None
+    patent_number = None
     st.write("Please enter your OpenAI API key to continue.")
 
-document = ""  # define document variable outside the if block
+# If a patent number is entered, download the patent content
+if patent_number:
+    url = f"https://patents.google.com/patent/{patent_number}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
 
-if uploaded_file is not None:
-    # Save the uploaded file
-    with open("uploaded_patent.pdf", "wb") as f:
-        f.write(uploaded_file.getvalue())
-        
+    # Find the element with the patent content
+    patent_content = soup.find_all('div', {'class': 'abstract'})
+
+    # Convert the patent content to a PDF
+    pdfkit.from_file(patent_content, "patent.pdf")
+
     # Open the PDF file
-    with fitz.open("uploaded_patent.pdf") as doc:
-        # Iterate over the pages
-        for page in doc:
-            # Extract the text and append to the document
-            document += page.get_text()
+    with open("patent.pdf", "r") as f:
+        document = f.read()
+
+else:
+    document = ""  # define document variable outside the if block
 
 MODEL_NAME = "gpt-3.5-turbo-16k-0613"
 system_prompt = "You are a helpful assistant."
@@ -71,7 +79,7 @@ def generate_and_print(system_prompt, user_prompt):
     return response.choices[0].message['content']  # return the generated content
 
 # If the API key is set and a file has been uploaded, generate the content
-if st.session_state.get("Api_key") and uploaded_file:
+if st.session_state.get("Api_key") and patent_number:
     try:
         if 'generation' not in st.session_state:
             st.session_state['generation'] = generate_and_print(system_prompt, user_prompt)
