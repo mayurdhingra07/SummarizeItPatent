@@ -6,3 +6,6 @@ unstructured[local-inference]
 tenacity
 PyPDF2
 PyMuPDF
+beautifulsoup4
+requests
+pdfkit
