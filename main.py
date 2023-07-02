@@ -35,6 +35,28 @@ else:
 
 document = ""  # define document variable outside the if block
 
+import requests
+from bs4 import BeautifulSoup
+import streamlit as st
+
+# Get patent number from user input
+patent_number = st.text_input("Enter patent number")
+
+# Construct URL for the patent page on Google Patents
+url = f"https://patents.google.com/patent/{patent_number}/"
+
+# Get the HTML content of the patent page
+response = requests.get(url)
+soup = BeautifulSoup(response.content, "html.parser")
+
+# Extract the patent text
+patent_text = ""
+for section in soup.find_all("section"):
+    patent_text += section.get_text()
+
+# Display the patent text
+st.write(patent_text)
+
 if uploaded_file is not None:
     # Save the uploaded file
     with open("uploaded_patent.pdf", "wb") as f:
